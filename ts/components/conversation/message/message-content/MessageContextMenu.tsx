@@ -278,6 +278,16 @@ export const MessageContextMenu = (props: Props) => {
     }
   };
 
+  const saveAllAttachments = (e: ItemParams) => {
+    e.event.stopPropagation();
+    if (!attachments?.length || !convoId || !sender) {
+      return;
+    }
+    for (let i = 0; i < attachments?.length; i++) {
+       saveSpecificAttachment (i);
+    }
+  }
+
   const saveAttachment = (e: ItemParams) => {
     // this is quite dirty but considering that we want the context menu of the message to show on click on the attachment
     // and the context menu save attachment item to save the right attachment I did not find a better way for now.
@@ -293,6 +303,14 @@ export const MessageContextMenu = (props: Props) => {
     if (targetAttachmentIndex > attachments.length) {
       return;
     }
+    saveSpecificAttachment (targetAttachmentIndex);
+  }
+
+  const saveSpecificAttachment = (targetAttachmentIndex: number) => {
+   if (!attachments?.length || !convoId || !sender) {
+      return;
+    }
+
     const messageTimestamp = timestamp || serverTimestamp || 0;
     void saveAttachmentToDisk({
       attachment: attachments[targetAttachmentIndex],
@@ -357,6 +375,9 @@ export const MessageContextMenu = (props: Props) => {
           )}
           {attachments?.length ? (
             <Item onClick={saveAttachment}>{window.i18n('downloadAttachment')}</Item>
+          ) : null}
+          {attachments?.length ? (
+            <Item onClick={saveAllAttachments}>{window.i18n('downloadAllAttachments')}</Item>
           ) : null}
           <Item onClick={copyText}>{window.i18n('copyMessage')}</Item>
           {(isSent || !isOutgoing) && (
