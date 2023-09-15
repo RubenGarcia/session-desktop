@@ -278,13 +278,14 @@ export const MessageContextMenu = (props: Props) => {
     }
   };
 
-  const saveAllAttachments = (e: ItemParams) => {
+  const saveAllAttachments = async (e: ItemParams) => {
     e.event.stopPropagation();
     if (!attachments?.length || !convoId || !sender) {
       return;
     }
-    for (let i = 0; i < attachments?.length; i++) {
-       saveSpecificAttachment (i);
+    await saveSpecificAttachment (0, true);
+    for (let i = 1; i < attachments?.length; i++) {
+       saveSpecificAttachment (i, false);
     }
   }
 
@@ -303,15 +304,16 @@ export const MessageContextMenu = (props: Props) => {
     if (targetAttachmentIndex > attachments.length) {
       return;
     }
-    saveSpecificAttachment (targetAttachmentIndex);
+    saveSpecificAttachment (targetAttachmentIndex, false);
   }
 
-  const saveSpecificAttachment = (targetAttachmentIndex: number) => {
+  const saveSpecificAttachment = async (targetAttachmentIndex: number, wait: boolean) => {
    if (!attachments?.length || !convoId || !sender) {
       return;
     }
 
     const messageTimestamp = timestamp || serverTimestamp || 0;
+    if (wait) {
     void saveAttachmentToDisk({
       attachment: attachments[targetAttachmentIndex],
       messageTimestamp,
@@ -319,6 +321,16 @@ export const MessageContextMenu = (props: Props) => {
       conversationId: convoId,
       index: targetAttachmentIndex,
     });
+    } else {
+    void saveAttachmentToDisk({
+      attachment: attachments[targetAttachmentIndex],
+      messageTimestamp,
+      messageSender: sender,
+      conversationId: convoId,
+      index: targetAttachmentIndex,
+    });
+
+    }
   };
 
   useClickAway(emojiPanelRef, () => {

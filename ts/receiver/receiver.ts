@@ -17,7 +17,7 @@ import { createTaskWithTimeout } from '../session/utils/TaskWithTimeout';
 import { UnprocessedParameter } from '../types/sqlSharedTypes';
 import { getEnvelopeId } from './common';
 
-export { downloadAttachment } from './attachments';
+export { downloadAttachment, downloadAllAttachments } from './attachments';
 
 const incomingMessagePromises: Array<Promise<any>> = [];
 

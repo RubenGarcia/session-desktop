@@ -15,6 +15,10 @@ import {
   fileServerURL,
 } from '../session/apis/file_server_api/FileServerApi';
 
+export async function downloadAllAttachments() {
+   alert ("downloadAllAttachments");
+}
+
 export async function downloadAttachment(attachment: {
   url: string;
   id?: string;
