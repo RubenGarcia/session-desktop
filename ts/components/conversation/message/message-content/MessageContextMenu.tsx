@@ -285,7 +285,6 @@ export const MessageContextMenu = (props: Props) => {
     }
     const messageTimestamp = timestamp || serverTimestamp || 0;
     const dir = await window.showDirectoryPicker({id: 1, mode: "readwrite"})
-    const perm = await dir.queryPermission({mode: "readwrite"});
     for (let i = 0; i < attachments?.length; i++) {
         void saveAttachmentToDiskQuietly({
           attachment: attachments[i],
